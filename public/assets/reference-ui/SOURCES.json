@@ -1,0 +1,30 @@
+{
+  "purpose": "Public UI icons observed on the user-requested Pahamify reference. Branding, courses and application backend remain Pahamin Academy.",
+  "observedDate": "2026-10-25",
+  "sources": {
+    "pegasus.svg": "https://app.pahamify.com/assets/pegasus-D0vD6CSi.svg",
+    "bank-soal.svg": "https://app.pahamify.com/assets/bank-soal-vhFefMZN.svg",
+    "tryout.svg": "https://app.pahamify.com/assets/tryout-CvyzbXf4.svg",
+    "sikat-soal.svg": "https://app.pahamify.com/assets/sikat-soal-BHdGbvJj.svg",
+    "mipi.svg": "https://app.pahamify.com/assets/ask-mipi-CRtYXbQy.svg",
+    "coin.svg": "https://app.pahamify.com/assets/coin-Dz92Q9zk.svg"
+  },
+  "courseIcons": {
+    "baseUrl": "https://storage.pahamify.com/appsAssets/courseIcon/",
+    "files": [
+      "icon_pu_utbk.png",
+      "icon_ppu_utbk.png",
+      "icon_pbm_utbk.png",
+      "icon_pk_utbk.png",
+      "icon_bing_universal.png",
+      "icon_matematika_utbk.png",
+      "icon_fisika_utbk.png",
+      "icon_kimia_xi-ipa.png",
+      "icon_biologi_utbk.png",
+      "icon_geografi_xi-ips.png",
+      "icon_sejarah_utbk.png",
+      "icon_ekonomi_xi-ips.png",
+      "icon_sosiologi_utbk.png"
+    ]
+  }
+}

@@ -2,6 +2,14 @@
 
 Platform belajar dengan identitas Pahamin: UI biru yang sederhana, navbar atas responsif, materi, latihan, tryout, kelas, Rencana Belajar, AI Studio, dan Paham AI. Panduan visual: [docs/DESIGN.md](docs/DESIGN.md).
 
+## Untuk agent dan kontributor baru
+
+Mulai dari [AGENTS.md](AGENTS.md). Peta modul tersedia di
+[ARCHITECTURE.md](docs/ARCHITECTURE.md), cara kerja/QA di
+[DEVELOPMENT.md](docs/DEVELOPMENT.md), dan konteks terakhir di
+[HANDOFF.md](docs/HANDOFF.md). Daftar lengkap: [peta dokumentasi](docs/README.md).
+Instruksi khusus frontend, backend, Worker, dan migrasi berada di `AGENTS.md` folder masing-masing.
+
 ## Menjalankan
 
 Butuh Node.js 24 atau lebih baru.

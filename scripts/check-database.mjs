@@ -7,7 +7,7 @@ try {
   const tables = await db.all(
     "SELECT tablename, rowsecurity FROM pg_tables WHERE schemaname='pahamin'",
   );
-  if (tables.length !== 14 || tables.some((table) => !table.rowsecurity))
+  if (tables.length !== 15 || tables.some((table) => !table.rowsecurity))
     throw new Error('Skema atau RLS database belum lengkap.');
   console.log(
     JSON.stringify({

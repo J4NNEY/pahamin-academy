@@ -76,7 +76,7 @@ test('PostgreSQL schema migration replays safely, rolls back writes and denies D
     const tables = await db.all(
       "SELECT tablename, rowsecurity FROM pg_tables WHERE schemaname='pahamin'",
     );
-    assert.equal(tables.length, 14);
+    assert.equal(tables.length, 15);
     assert.ok(tables.every((t) => t.rowsecurity));
     for (const role of ['anon', 'authenticated', 'service_role']) {
       assert.equal(
@@ -237,6 +237,14 @@ test('SQLite import rejects occupied destinations and orphaned rows without over
     await assert.rejects(importSqlite(db, source, { apply: true }), /Tujuan belum kosong/);
     assert.equal((await db.get('SELECT count(*)::integer AS count FROM pahamin.users')).count, 1);
     await db.run('DELETE FROM pahamin.users');
+    await db.run(
+      "INSERT INTO pahamin.catalogue(id,kind,payload) VALUES ('00000000-0000-4000-8000-000000000099','material','{}')",
+    );
+    await assert.rejects(
+      importSqlite(db, source, { apply: true }),
+      /Tujuan belum kosong \(catalogue\)/,
+    );
+    await db.run('DELETE FROM pahamin.catalogue');
     fs.rmSync(source);
     sqliteFixture(directory, { orphan: true });
     await assert.rejects(importSqlite(db, source, { apply: true }), /tanpa pemilik/);
@@ -271,7 +279,7 @@ test('SQLite import rolls back every prior row when a later database constraint 
     ]) {
       assert.equal(
         (await db.get(`SELECT count(*)::integer AS count FROM pahamin.${table}`)).count,
-        table === 'schema_migrations' ? 1 : 0,
+        table === 'schema_migrations' ? 2 : 0,
       );
     }
   } finally {

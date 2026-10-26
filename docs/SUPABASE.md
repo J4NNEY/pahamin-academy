@@ -2,6 +2,8 @@
 
 Backend Express sekarang menyimpan akun, sesi, materi, soal, progres, tryout, preferensi, kelas, dan percakapan tutor di PostgreSQL Supabase. Runtime tidak memakai SQLite dan tidak berpindah ke database lokal saat koneksi gagal.
 
+Pada Cloudflare Workers, koneksi database memakai binding Hyperdrive dengan TLS origin terverifikasi. URI pada `.env` dipakai untuk server Node, migrasi, dan pengujian lokal. Lihat [CLOUDFLARE.md](CLOUDFLARE.md) untuk deployment.
+
 ## Konfigurasi
 
 1. Buka project Supabase → **Connect → Session pooler**. Salin URI lengkap, lalu ganti `[YOUR-PASSWORD]` dengan password **database**. Karakter khusus di password harus di-percent-encode. Session pooler cocok untuk backend Node yang terus berjalan dan koneksi Windows/IPv4; direct connection juga didukung bila jaringan mendukungnya.
@@ -30,7 +32,7 @@ Backend Express sekarang menyimpan akun, sesi, materi, soal, progres, tryout, pr
 
    Migrasi menggunakan akun database owner yang diberikan Supabase. Skrip hanya membuat schema `pahamin` dan objek aplikasi di dalamnya. Tabel di `public`, `auth`, atau `storage` tidak diubah. Migrasi dijalankan dalam transaksi dengan lock; pengulangan versi yang sudah tercatat tidak menulis ulang tabel. Aplikasi memeriksa versi saat startup, tanpa menjalankan DDL otomatis.
 
-   Alternatif: jalankan isi `supabase/migrations/202610260001_pahamin.sql` sekali melalui SQL Editor dalam satu transaksi. Jangan menjalankan lagi SQL mentah setelah skemanya terbentuk; gunakan `db:migrate` untuk pemeriksaan pengulangan.
+   Alternatif: jalankan migrasi SQL yang belum diterapkan dari `supabase/migrations/` sesuai urutan dalam satu transaksi. Gunakan `db:migrate` untuk menjalankan migrasi inkremental dan melewati versi yang sudah diterapkan. Migrasi admin terbaru adalah `202610260002_admin.sql`.
 
 5. Untuk project baru tanpa data lama, jalankan `npm run dev` dan buka http://127.0.0.1:5173. Jika ingin membawa data lama, lakukan impor di bawah **sebelum mendaftarkan akun baru**.
 
@@ -56,7 +58,7 @@ Tujuan yang sudah berisi data akan ditolak tanpa overwrite. Seluruh impor memaka
 ## Akses dan keamanan
 
 - Schema `pahamin` hanya untuk backend. Jangan tambahkan schema ini ke daftar **Exposed schemas** pada Data API.
-- Semua 14 tabel, termasuk metadata migrasi, mengaktifkan RLS. Tidak ada policy untuk client. Hak schema/tabel/sequence dicabut dari `PUBLIC`, `anon`, `authenticated`, dan `service_role` pada objek aplikasi.
+- Semua 15 tabel, termasuk metadata migrasi dan katalog admin, mengaktifkan RLS. Tidak ada policy untuk client. Hak schema/tabel/sequence dicabut dari `PUBLIC`, `anon`, `authenticated`, dan `service_role` pada objek aplikasi.
 - Koneksi database owner mengakses tabel melalui API Express; pemeriksaan pemilik tetap dilakukan server. RLS di sini memblokir akses langsung client, bukan menggantikan pemeriksaan pemilik pada server.
 - Akun aplikasi berada di `pahamin.users`, dengan scrypt + salt dan sesi cookie HttpOnly/SameSite Strict. Ini memakai **Supabase Database**; login belum dipindahkan ke Supabase Auth. OAuth/reset password/email verification tidak ditambahkan dalam perubahan database ini.
 - Kunci jawaban dan snapshot soal tetap privat di server. Frontend menerima soal tanpa kunci sampai sesi dinilai.

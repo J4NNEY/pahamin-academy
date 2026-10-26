@@ -11,6 +11,7 @@ export type Question = {
   source?: string;
 };
 export type Material = {
+  origin?: 'academy';
   curriculum?: string;
   videoUrl?: string;
   id: string;
@@ -60,7 +61,7 @@ export type State = {
   eventAttempts: { attempt_id: string; event_id: string; subject: string }[];
   liveSessions: LiveSession[];
   tutorMessages: { id: string; role: string; content: string; created: string }[];
-  user: { id: string; name: string; email: string; goal: number } | null;
+  user: { id: string; name: string; email: string; goal: number; role: 'student' | 'admin' } | null;
   subjects: string[];
   materials: Material[];
   questions: Question[];
@@ -90,7 +91,8 @@ export type Page =
   | 'pegasus'
   | 'purchase'
   | 'tutor'
-  | 'quick';
+  | 'quick'
+  | 'admin';
 export type StudyPreferences = {
   onboarded: boolean;
   curriculum: string;

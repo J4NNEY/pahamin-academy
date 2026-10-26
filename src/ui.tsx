@@ -146,7 +146,13 @@ export function MaterialCard({
       </button>
       <div className="material-body">
         <div className="card-meta">
-          <span>{material.source.startsWith('Gemini') ? 'DIBUAT DENGAN AI' : 'MATERI CONTOH'}</span>
+          <span>
+            {material.origin === 'academy'
+              ? 'PAHAMIN ACADEMY'
+              : material.source.startsWith('Gemini')
+                ? 'DIBUAT DENGAN AI'
+                : 'MATERI CONTOH'}
+          </span>
           <button
             aria-label={saved ? 'Hapus dari koleksi' : 'Simpan ke koleksi'}
             className={`bookmark-button ${saved ? 'saved' : ''}`}

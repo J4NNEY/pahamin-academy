@@ -25,6 +25,13 @@ GEMINI_MODEL=gemini-3.8-flash
 
 Ambil key dari [Google AI Studio](https://aistudio.google.com/apikey). Jangan beri awalan `VITE_` pada secret. Restart server setelah mengganti `.env`. Model bisa diganti sesuai akses proyek Gemini. Integrasi menggunakan [Gemini generateContent REST](https://ai.google.dev/api/generate-content) dan structured JSON output. API key tidak dikirim ke frontend. Pengaturan hanya menampilkan keberadaan key, bukan validitas atau kuota.
 
+## Admin
+
+Panel admin dapat menambah/edit materi dan soal, mengimpor soal, membuat draf dari file dengan Gemini,
+dan menerbitkan konten untuk semua siswa. Setelah akun terdaftar, aktifkan melalui
+`npm run admin:grant -- email@contoh.com`, lalu buka menu akun **Panel Admin** atau `/#/admin`.
+Jalankan `npm run db:migrate` terlebih dahulu. Panduan lengkap: [ADMIN.md](docs/ADMIN.md).
+
 ## Impor soal
 
 1. Masuk, pilih **Bank soal → Impor soal**.
@@ -60,7 +67,7 @@ npm run build
 npm start
 ```
 
-Setelah build, server menyajikan UI dan API di http://127.0.0.1:3001. Default bind hanya loopback untuk penggunaan lokal. Bila akan dideploy sebagai layanan publik, siapkan HTTPS/reverse proxy, `SECURE_COOKIES=true`, origin aplikasi, backup, pemulihan/verifikasi akun, serta pembatasan kuota AI sesuai skala pemakaian. Deployment publik belum termasuk.
+Setelah build, server Node menyajikan UI dan API di http://127.0.0.1:3001. Default bind hanya loopback untuk penggunaan lokal. Untuk Cloudflare Workers, gunakan `npm run deploy`, yang menerbitkan frontend dan API bersama; detail binding database dan secret ada di [docs/CLOUDFLARE.md](docs/CLOUDFLARE.md). `npm run cf:check` memeriksa bundle tanpa publikasi, dan `npm run cf:dev` menguji runtime Worker lokal. HTTPS, backup, pemulihan/verifikasi akun, dan kuota tetap perlu disesuaikan untuk operasional publik.
 
 ## Referensi dan batas verifikasi
 

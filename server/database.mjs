@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import { Pool, types } from 'pg';
 
-export const SCHEMA_VERSION = '202610260001_pahamin';
+export const SCHEMA_VERSION = '202610260002_admin';
 
 // One small async SQL interface for the production pool and PostgreSQL test engine.
 // SQL uses native $1 parameters; no query rewriting or credentials in the browser.

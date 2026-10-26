@@ -2,5 +2,9 @@ node_modules/
 dist/
 data/
 .env
+.env.*
+!.env.example
+.dev.vars*
+.wrangler/
 *.tsbuildinfo
 artifacts/

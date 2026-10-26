@@ -82,9 +82,9 @@ export async function importSqlite(db, sourcePath, { apply = false } = {}) {
     }
     if (apply)
       await tx.query(
-        `LOCK TABLE ${definitions.map(([table]) => `pahamin.${table}`).join(',')}, pahamin.sessions IN ACCESS EXCLUSIVE MODE`,
+        `LOCK TABLE ${definitions.map(([table]) => `pahamin.${table}`).join(',')}, pahamin.sessions, pahamin.catalogue IN ACCESS EXCLUSIVE MODE`,
       );
-    for (const table of [...definitions.map(([name]) => name), 'sessions']) {
+    for (const table of [...definitions.map(([name]) => name), 'sessions', 'catalogue']) {
       const row = await tx.get(`SELECT count(*)::integer AS count FROM pahamin.${table}`);
       if (row.count)
         throw new Error(

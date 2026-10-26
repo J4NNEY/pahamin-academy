@@ -228,8 +228,10 @@ export function ImportDialog({
   aiConfigured,
   onClose,
   onSaved,
+  admin = false,
 }: {
   subjects: string[];
+  admin?: boolean;
   curriculum?: string;
   aiConfigured: boolean;
   onClose: () => void;
@@ -301,10 +303,13 @@ export function ImportDialog({
                   setBusy(true);
                   setError('');
                   try {
-                    const r = await api<{ count: number; skipped: number }>('/questions/import', {
-                      method: 'POST',
-                      body: JSON.stringify(preview),
-                    });
+                    const r = await api<{ count: number; skipped: number }>(
+                      admin ? '/admin/questions/import' : '/questions/import',
+                      {
+                        method: 'POST',
+                        body: JSON.stringify(preview),
+                      },
+                    );
                     await onSaved(r.count, r.skipped);
                   } catch (e) {
                     setError((e as Error).message);
@@ -314,14 +319,16 @@ export function ImportDialog({
                 }}
               >
                 {busy ? <LoaderCircle size={17} className="spin" /> : <Check size={17} />}Simpan{' '}
-                {preview.questions.length} soal
+                {preview.questions.length} soal{admin ? ' sebagai draf' : ''}
               </button>
             </div>
           </>
         ) : (
           <>
             <p className="muted">
-              Unggah kumpulan soal, tinjau hasilnya, lalu simpan ke bank soal personalmu.
+              {admin
+                ? 'Unggah kumpulan soal dan tinjau hasilnya. Soal disimpan sebagai draf admin sebelum diterbitkan untuk siswa.'
+                : 'Unggah kumpulan soal, tinjau hasilnya, lalu simpan ke bank soal personalmu.'}
             </p>
             <div className="import-layout">
               <FileDrop
@@ -432,12 +439,14 @@ export function AIStudio({
   onSaved,
   onSettings,
   toast,
+  admin = false,
 }: {
   state: State;
   requireAccount: () => boolean;
   onSaved: (id: string) => Promise<void>;
   onSettings: () => void;
   toast: (s: string) => void;
+  admin?: boolean;
 }) {
   const [file, setFile] = useState<File | null>(null),
     [subject, setSubject] = useState('Matematika'),
@@ -637,13 +646,20 @@ export function AIStudio({
                 setSaving(true);
                 setError('');
                 try {
-                  const result = await api<{ id: string }>('/materials', {
-                    method: 'POST',
-                    body: JSON.stringify({ material: draft, source: file?.name || 'Dokumen' }),
-                  });
+                  const result = await api<{ id: string }>(
+                    admin ? '/admin/materials/from-ai' : '/materials',
+                    {
+                      method: 'POST',
+                      body: JSON.stringify({ material: draft, source: file?.name || 'Dokumen' }),
+                    },
+                  );
                   await onSaved(result.id);
                   setDraft(null);
-                  toast('Materi dan kuis berhasil disimpan ke koleksimu.');
+                  toast(
+                    admin
+                      ? 'Materi dan kuis disimpan sebagai draf admin. Terbitkan setelah ditinjau.'
+                      : 'Materi dan kuis berhasil disimpan ke koleksimu.',
+                  );
                 } catch (e) {
                   setError((e as Error).message);
                 } finally {
@@ -651,8 +667,8 @@ export function AIStudio({
                 }
               }}
             >
-              {saving ? <LoaderCircle className="spin" size={17} /> : <Check size={17} />}Simpan
-              materi & kuis
+              {saving ? <LoaderCircle className="spin" size={17} /> : <Check size={17} />}Simpan{' '}
+              {admin ? 'draf materi & kuis' : 'materi & kuis'}
             </button>
           </div>
         </section>

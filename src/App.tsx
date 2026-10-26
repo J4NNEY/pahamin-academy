@@ -17,6 +17,7 @@ import {
   ClipboardList,
   LibraryBig,
   ShoppingBasket,
+  ShieldCheck,
 } from 'lucide-react';
 import { api } from './api';
 import type { Page, State, Material, Session, Result, PracticeOptions, Actions } from './types';
@@ -29,6 +30,7 @@ import { Pegasus, Tutor, Purchase } from './Personal';
 import { LiveClasses } from './Live';
 import { AIStudio, ImportDialog } from './Studio';
 import { QuizDialog, ResultDialog } from './Quiz';
+import { Admin } from './Admin';
 
 const navigation = [
   { id: 'home', label: 'Belajar', icon: BookOpen, kind: 'learning' },
@@ -53,6 +55,7 @@ const pages: Page[] = [
   'purchase',
   'tutor',
   'quick',
+  'admin',
 ];
 const fromHash = () => {
   const key = location.hash.replace('#/', '');
@@ -318,6 +321,9 @@ export default function AcademyApp() {
         {page === 'tutor' && <Tutor state={state} actions={actions} />}
         {page === 'live' && <LiveClasses state={state} actions={actions} />}
         {page === 'purchase' && <Purchase actions={actions} />}
+        {page === 'admin' && (
+          <Admin key={state.user?.id || 'guest'} state={state} actions={actions} />
+        )}
         {page === 'collection' && <Collection state={state} actions={actions} />}
         {page === 'history' && <StudyHistory state={state} actions={actions} />}
         {page === 'settings' && (
@@ -375,6 +381,15 @@ export default function AcademyApp() {
       {profile && (
         <Modal title="Pengaturan" onClose={() => setProfile(false)}>
           <div className="profile-menu">
+            {state.user?.role === 'admin' && (
+              <button onClick={() => navigate('admin')}>
+                <span>
+                  <ShieldCheck size={21} />
+                </span>
+                Panel Admin
+                <ChevronRight size={18} />
+              </button>
+            )}
             {[
               { label: 'Ubah Profil', icon: UserRound, page: 'settings' },
               { label: 'Bookmark', icon: Bookmark, page: 'collection' },

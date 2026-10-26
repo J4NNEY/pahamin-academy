@@ -1,6 +1,45 @@
 # Verifikasi implementasi terbaru
 
+## Panel admin — 26 Oktober 2026
+
+- Build TypeScript/Vite dan bundle Cloudflare berhasil. `npm test`: 47 tes lulus, termasuk
+  pembatasan guest/siswa, larangan promosi role dari registrasi/profil, draf privat, publikasi
+  bersama, kunci jawaban tersembunyi, snapshot latihan, konflik revisi, batch atomik,
+  impor deduplikasi, penyimpanan draf Gemini, dan pencabutan akses sesi yang sudah aktif.
+- Migrasi inkremental `202610260002_admin` diterapkan ke Supabase. `db:check`: 15 tabel,
+  RLS aktif. Akun lama/progres tetap tersimpan. Akses admin diaktifkan untuk akun yang
+  ditunjuk pengguna; password tidak diubah.
+- Deployment publik: pengujian API dengan dua akun QA sementara berhasil untuk membuat
+  draf, menerbitkan batch, membaca sebagai siswa/tamu, mengedit, menolak revisi lama,
+  mengarsipkan, menilai snapshot, impor dan menyimpan draf AI terkontrol. Cookie Secure
+  aktif, siswa mendapat 403 dan tamu 401 pada API admin. Semua fixture cloud dibersihkan.
+  Bukti terstruktur lokal: `artifacts/admin-qa/live-result.json`.
+- Browser Chrome localhost memakai PGlite disposable: tambah materi, tambah soal dengan
+  kunci/pembahasan, serta publikasi batch berhasil melalui UI. Screenshot desktop:
+  `artifacts/admin-qa/admin-desktop.png`. Screenshot memakai fixture lokal, bukan materi
+  yang dipublikasikan permanen. Tidak ada klaim uji browser ponsel atau sesi browser akun
+  asli pengguna. Pemeriksaan cloud memakai API dan role database, bukan password pengguna.
+- Tidak memanggil Gemini nyata pada iterasi admin ini. Penyimpanan hasil draf diuji dengan
+  konten terkontrol; status provider/PDF yang sebelumnya 503 tidak diklaim terselesaikan.
+- Panduan akses dan alur: [ADMIN.md](ADMIN.md). Perubahan belum di-commit/push.
+- Worker admin aktif: `a61add2c-070c-48ef-9b22-539a58be7233` pada
+  `https://pahamin-academy.muhammadzanni28.workers.dev`. Server QA lokal sudah dihentikan.
+
 Pemeriksaan akhir 26 Oktober 2026, lingkungan Windows lokal. Observasi UI referensi dan pengujian alur utama dilakukan 25–26 Oktober 2026.
+
+## Perbaikan deployment Cloudflare — 26 Oktober 2026
+
+- Inspeksi langsung situs publik awal membuktikan `/api/state` berstatus HTTP 200 dengan `Content-Type: text/html`, berisi HTML SPA yang sama dengan homepage. Frontend menerima fallback error sebagai state, lalu gagal membaca properti state saat render.
+- Frontend kini menolak respons API non-JSON, JSON rusak, atau state yang tidak lengkap; error startup tetap menampilkan pesan dan tombol coba lagi. Error boundary menyediakan tampilan pemulihan ketika render gagal.
+- Entry Worker menjalankan Express melalui adapter HTTP Cloudflare, melayani `dist` dengan binding `ASSETS`, dan mengutamakan `/api` serta `/api/*` sebelum fallback SPA. Pool database dipisahkan per request dan ditutup setelah respons.
+- Hyperdrive `pahamin-supabase` dibuat pada akun pengguna, ID `78d404b72fd14beab5b4de681586cf03`. Origin Supabase memakai TLS `verify-full` dengan CA publik Supabase; caching SQL dimatikan. Tidak ada perubahan skema atau data pengguna untuk penyiapan ini.
+- Key/model Gemini dipasang sebagai secret runtime Worker setelah persetujuan eksplisit pengguna. Pemindaian bundle tidak menemukan literal URI database atau key Gemini.
+- `npm test`: **38 tes lulus**. Build Vite/TypeScript dan dry-run bundle Worker lulus. Smoke runtime Worker lokal terhadap Supabase membuktikan register/login, preferensi, penyelesaian materi, latihan dan penilaian; data QA dibersihkan.
+- `npm run deploy` berhasil. URL: https://pahamin-academy.muhammadzanni28.workers.dev. Versi yang diterbitkan: `583da0ba-e406-45fd-b46a-c3352a6ddf40`.
+- Setelah deploy, homepage HTTP 200; `/api/state` HTTP 200 JSON, 6 materi dan 16 soal, AI configured=true dengan model `gemini-3.6-flash`; `/api/unknown` JSON 404.
+- Smoke publik berhasil: register → preferensi → tandai materi dipahami → latihan/jawaban/submit → logout → login ulang → progres dan hasil terbaca. Cookie sesi memakai Secure. Readback preferensi juga diperiksa langsung di Supabase. Seluruh data akun QA publik dihapus dengan filter email/nama fixture yang tepat.
+- Browser Chrome memverifikasi dashboard publik ter-render dan menampilkan katalog serta navigasi. Screenshot `artifacts/screenshots/cloudflare-live.png`.
+- Tidak ada generasi Gemini baru pada pengujian deployment ini. Lulus konfigurasi key tidak membuktikan ketersediaan atau kuota provider; riwayat pengujian AI dicatat terpisah di bawah.
 
 ## Perubahan database ke Supabase — 26 Oktober 2026
 
@@ -72,4 +111,4 @@ Referensi teknis: [structured output dan batas kompleksitas grammar](https://ai.
 - Upload file melalui otomasi ekstensi Chrome masih terbatas oleh izin file URLs. Multipart CSV/JSON, pratinjau, dan penyimpanan diuji melalui API; upload browser end-to-end tidak diklaim lulus.
 - Hasil mengikuti UI dan alur yang teramati, tanpa klaim kesamaan backend, perhitungan IRT, ranking nasional, atau katalog konten premium Pahamify. Rincian sumber dan batas REA ada di [PAHAMIFY-PARITY.md](PAHAMIFY-PARITY.md).
 - Pembayaran belum memakai gateway. Live Class memakai jadwal dan tautan pengguna, tanpa layanan streaming/pengajar terintegrasi. Enam materi dan 16 soal bawaan adalah contoh orisinal.
-- Belum dilakukan deployment publik, tes beban, pengujian perangkat fisik, atau verifikasi layanan email/OAuth.
+- Deployment publik dan alur akun/progres/latihan telah diverifikasi melalui Cloudflare sebagaimana catatan terbaru di atas. Tes beban, perangkat fisik, email/OAuth belum diverifikasi.

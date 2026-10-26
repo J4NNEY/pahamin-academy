@@ -233,7 +233,11 @@ export function Learning({
                     <div>
                       <span className="lesson-subject">
                         {m.subject} ·{' '}
-                        {m.source.startsWith('Gemini') ? 'Materi AI' : 'Materi contoh'}
+                        {m.origin === 'academy'
+                          ? 'Pahamin Academy'
+                          : m.source.startsWith('Gemini')
+                            ? 'Materi AI'
+                            : 'Materi contoh'}
                       </span>
                       <h3>{m.title}</h3>
                       <p>
@@ -498,6 +502,7 @@ export function MaterialReader({
               onClick={() =>
                 void actions.start({
                   subject: material.subject,
+                  topic: material.topic,
                   count: 5,
                   curriculum: material.curriculum || 'UTBK',
                 })

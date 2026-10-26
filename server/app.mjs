@@ -17,13 +17,21 @@ import {
 } from './validation.mjs';
 import { generateWithGemini } from './gemini.mjs';
 import { registerFeatures } from './features.mjs';
+import { registerAdmin } from './admin.mjs';
 
 const hash = (s) => createHash('sha256').update(s).digest('hex');
 const publicQuestion = ({ answer, explanation, ...q }) => q;
-export async function createApp({ database, provider = generateWithGemini, tutorProvider } = {}) {
+export async function createApp({
+  database,
+  provider = generateWithGemini,
+  tutorProvider,
+  checkSchema = true,
+  serveStatic = true,
+  trustCloudflare = false,
+} = {}) {
   const db = database || (await connectDatabase());
   try {
-    await assertSchema(db);
+    if (checkSchema) await assertSchema(db);
   } catch (error) {
     if (!database) await db.close();
     throw error;
@@ -54,7 +62,7 @@ export async function createApp({ database, provider = generateWithGemini, tutor
     const token = req.cookies.pa_session;
     req.user = token
       ? await db.get(
-          'SELECT u.id,u.email,u.name,u.goal FROM pahamin.users u JOIN pahamin.sessions s ON u.id=s.user_id WHERE s.token=$1 AND s.expires>$2',
+          'SELECT u.id,u.email,u.name,u.goal,u.role FROM pahamin.users u JOIN pahamin.sessions s ON u.id=s.user_id WHERE s.token=$1 AND s.expires>$2',
           hash(token),
           Date.now(),
         )
@@ -72,7 +80,7 @@ export async function createApp({ database, provider = generateWithGemini, tutor
     (name, max, window = 60000) =>
     async (req, res, next) => {
       const now = Date.now(),
-        key = `${name}:${req.user?.id || req.ip}`;
+        key = `${name}:${req.user?.id || (trustCloudflare && req.get('cf-connecting-ip')) || req.ip}`;
       let entry = limits.get(key);
       if (!entry || now > entry.until) {
         entry = { count: 0, until: now + window };
@@ -87,6 +95,11 @@ export async function createApp({ database, provider = generateWithGemini, tutor
     };
   const readMaterials = async (userId) => [
     ...seedMaterials.map((m) => ({ ...m, curriculum: 'UTBK' })),
+    ...(
+      await db.all(
+        "SELECT payload FROM pahamin.catalogue WHERE kind='material' AND status='published' ORDER BY created_at,id",
+      )
+    ).map((r) => r.payload),
     ...(userId
       ? (await db.all('SELECT payload FROM pahamin.materials WHERE user_id=$1', userId)).map(
           (r) => r.payload,
@@ -95,6 +108,11 @@ export async function createApp({ database, provider = generateWithGemini, tutor
   ];
   const readQuestions = async (userId) => [
     ...seedQuestions.map((q) => ({ ...q, curriculum: 'UTBK' })),
+    ...(
+      await db.all(
+        "SELECT payload FROM pahamin.catalogue WHERE kind='question' AND status='published' ORDER BY created_at,id",
+      )
+    ).map((r) => r.payload),
     ...(userId
       ? (await db.all('SELECT payload FROM pahamin.questions WHERE user_id=$1', userId)).map(
           (r) => r.payload,
@@ -252,6 +270,7 @@ export async function createApp({ database, provider = generateWithGemini, tutor
     readMaterials,
     tutorProvider,
   });
+  registerAdmin({ app, db, requireUser, limit });
   app.post('/api/import/preview', requireUser, limit('ai', 8), upload, async (req, res) => {
     if (!req.file) return res.status(400).json({ error: 'Pilih file soal terlebih dahulu.' });
     const ext = path.extname(req.file.originalname).toLowerCase();
@@ -502,7 +521,7 @@ export async function createApp({ database, provider = generateWithGemini, tutor
     });
   });
   const dist = path.resolve('dist');
-  if (fs.existsSync(dist)) {
+  if (serveStatic && fs.existsSync(dist)) {
     app.use(express.static(dist));
     app.get('/{*path}', async (req, res, next) =>
       req.path.startsWith('/api/') ? next() : res.sendFile(path.join(dist, 'index.html')),

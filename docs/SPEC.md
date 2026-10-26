@@ -10,6 +10,7 @@ REA pada bundle publik utuh mencapai deadline; analisis subset empat fungsi UI y
 
 ## Fitur
 
+- Panel admin dengan akses role server: tambah/edit materi dan soal, draf/terbit/arsip, impor soal, draf Gemini dari file, pencarian/filter, dan publikasi batch. Konten terbit masuk katalog bersama. Aktivasi akun dan alur editorial ada di [ADMIN.md](ADMIN.md).
 - Dashboard responsif, kategori subjek, pencarian, target harian, progres aktual.
 - Akun email/password dengan sesi cookie HttpOnly, PostgreSQL Supabase melalui backend Express, data terpisah per pengguna. Skema dan proses pemindahan SQLite ada di [SUPABASE.md](SUPABASE.md).
 - Materi contoh orisinal, bookmark, penyelesaian materi, koleksi dan riwayat.
@@ -27,4 +28,4 @@ REA pada bundle publik utuh mencapai deadline; analisis subset empat fungsi UI y
 
 ## Batas
 
-Aplikasi lokal dengan backend nyata, belum dideploy publik. Tidak menyertakan perpustakaan video/soal premium Pahamify, layanan pengajar/streaming, gateway pembayaran, ranking nasional, IRT, prediksi kelulusan jurusan, OAuth, verifikasi email atau reset password email. Halaman Pembelian menampilkan akses gratis lokal dan konfigurasi Gemini tanpa memalsukan transaksi berhasil. Soal dan materi bawaan ditandai contoh. Panggilan Gemini nyata memerlukan key dan jaringan; kegagalan tidak diganti hasil palsu. File diolah dalam memori, maksimal 10 MB, tanpa penyimpanan file mentah. Teks maksimal 150.000 karakter; impor maksimal 200 soal per batch. Ikon publik referensi disajikan sebagai gambar, bukan bundle JavaScript Pahamify.
+Aplikasi mempunyai backend nyata, mendukung server Node lokal dan deployment Cloudflare Workers. Panduan deployment ada di [CLOUDFLARE.md](CLOUDFLARE.md). Tidak menyertakan perpustakaan video/soal premium Pahamify, layanan pengajar/streaming, gateway pembayaran, ranking nasional, IRT, prediksi kelulusan jurusan, OAuth, verifikasi email atau reset password email. Halaman Pembelian menampilkan akses gratis dan konfigurasi Gemini tanpa memalsukan transaksi berhasil. Soal dan materi bawaan ditandai contoh. Panggilan Gemini nyata memerlukan key dan jaringan; kegagalan tidak diganti hasil palsu. File diolah dalam memori, maksimal 10 MB, tanpa penyimpanan file mentah. Teks maksimal 150.000 karakter; impor maksimal 200 soal per batch. Ikon publik referensi disajikan sebagai gambar, bukan bundle JavaScript Pahamify.

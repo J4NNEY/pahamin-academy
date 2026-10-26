@@ -526,7 +526,7 @@ export function TryoutCenter({
                   <p>
                     {state.preferences.major
                       ? `${state.preferences.major} · ${state.preferences.university || 'Kampus belum dipilih'}`
-                      : 'Target jurusan bisa kamu atur di Pegasus.'}
+                      : 'Target jurusan bisa kamu atur di Rencana Belajar.'}
                   </p>
                   <button className="text-button" onClick={() => actions.navigate('pegasus')}>
                     Atur target belajar <ArrowRight size={14} />
@@ -778,7 +778,7 @@ export function QuickPractice({
   return (
     <>
       <PageHero
-        title="Sikat Soal"
+        title="Latihan Cepat"
         onBack={() => actions.navigate('home')}
         art={<AcademyIcon kind="quick" size="large" />}
       />
@@ -818,7 +818,7 @@ export function QuickPractice({
             disabled={actions.busy}
             onClick={() => void actions.start({ subject, count, adaptive, curriculum })}
           >
-            Mulai Sikat Soal <ArrowRight size={16} />
+            Mulai Latihan Cepat <ArrowRight size={16} />
           </button>
         </section>
       </div>

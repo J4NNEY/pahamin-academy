@@ -6,18 +6,10 @@ import {
   ArrowRight,
   CheckCircle2,
   Clock,
-  Diamond,
-  Coins,
-  Search,
-  X,
-  Upload,
   Sparkles,
-  BookOpen,
   PlayCircle,
   FileText,
   ClipboardList,
-  Check,
-  History,
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { Modal, Empty, SearchField } from './ui';
@@ -25,6 +17,7 @@ import { AcademyIcon } from './AcademyArt';
 import { PageHero } from './ui';
 import type { State, Actions, Material } from './types';
 import { learningCatalogue, subjectMatches } from './catalogue';
+import { DashboardHeader, SuggestedMaterials } from './Dashboard';
 
 export function CurriculumPicker({
   value,
@@ -107,79 +100,23 @@ export function Learning({
 }) {
   const [picker, setPicker] = useState(false),
     [query, setQuery] = useState(''),
-    [subject, setSubject] = useState<string | null>(null),
-    [slide, setSlide] = useState(0);
+    [subject, setSubject] = useState<string | null>(null);
   const completed = new Set(state.completed.map((c) => c.id));
-  const points =
-      state.completed.length * 20 + state.attempts.reduce((n, a) => n + a.result.correct * 10, 0),
-    level = Math.floor(points / 100) + 1;
   const materials = state.materials.filter(
     (m) =>
       (m.curriculum || 'UTBK') === curriculum &&
       (!subject || subjectMatches(subject, m.subject)) &&
       `${m.title} ${m.subject} ${m.topic}`.toLowerCase().includes(query.toLowerCase()),
   );
-  const features = [
-    { label: 'Pegasus', kind: 'pegasus', page: 'pegasus' },
-    { label: 'Bank Soal', kind: 'questions', page: 'questions' },
-    { label: 'Tryout', kind: 'tryout', page: 'tryout' },
-    { label: 'Sikat Soal', kind: 'quick', page: 'quick' },
-  ] as const;
   return (
     <>
       {!catalogueOnly ? (
-        <section className="learner-hero">
-          <div className="academy-width">
-            <div className="learner-top">
-              <span className="learner-avatar">
-                {state.user?.name.charAt(0).toUpperCase() || 'P'}
-              </span>
-              <span className="free-badge">Free</span>
-              <span className="learner-name">{state.user?.name || 'Teman belajar'}</span>
-              <div className="learner-wallet">
-                <span title="Tidak ada mata uang berbayar">
-                  <Diamond size={22} fill="#f2a5d9" />0
-                </span>
-                <span title="Poin belajar dari aktivitas aktual">
-                  <Coins size={22} fill="#ffdc65" />
-                  {points}
-                </span>
-              </div>
-            </div>
-            <div className="experience-track">
-              <i style={{ width: `${points % 100}%` }} />
-            </div>
-            <div className="experience-meta">
-              <strong>Level {level}</strong>
-              <span>{points % 100}/100 exp</span>
-            </div>
-            <button className="learner-announcement" onClick={() => actions.navigate('ai')}>
-              <strong>Belajar dari file kamu sendiri</strong>
-              <span>
-                Buka AI Studio <ArrowRight size={15} />
-              </span>
-            </button>
-          </div>
-        </section>
+        <DashboardHeader state={state} actions={actions} curriculum={curriculum} />
       ) : (
-        <PageHero title="Materi Belajar" onBack={() => actions.navigate('home')} />
+        <PageHero title="Jelajahi materi" onBack={() => actions.navigate('home')} />
       )}
-      <div className="learning-body">
+      <div className={`learning-body ${catalogueOnly ? 'catalogue-page' : 'dashboard-content'}`}>
         <div className="academy-width">
-          {!catalogueOnly && (
-            <section className="white-panel feature-shortcuts">
-              <h2>Fitur Belajar</h2>
-              <div>
-                {features.map((f) => (
-                  <button key={f.kind} onClick={() => actions.navigate(f.page)}>
-                    <AcademyIcon kind={f.kind} />
-                    <strong>{f.label}</strong>
-                    {f.kind === 'pegasus' && <small>Baru</small>}
-                  </button>
-                ))}
-              </div>
-            </section>
-          )}
           <section className="white-panel learning-catalogue">
             <div className="catalogue-heading">
               <div>
@@ -266,109 +203,7 @@ export function Learning({
             )}
           </section>
           {!catalogueOnly && (
-            <>
-              <div className="home-promos">
-                <section>
-                  <h2>Tryout</h2>
-                  <button
-                    className="home-promo-card tryout-promo"
-                    onClick={() => actions.navigate('tryout')}
-                  >
-                    <AcademyIcon kind="tryout" size="large" />
-                    <div>
-                      <h3>Tryout Pahamin</h3>
-                      <p>Uji dan asah kemampuanmu sebelum UTBK, Ujian Mandiri dan TKA!</p>
-                    </div>
-                    <ChevronRight size={20} />
-                  </button>
-                </section>
-                <section>
-                  <h2>Cari Jawaban Soal atau PR?</h2>
-                  <button
-                    className="home-promo-card tutor-promo"
-                    onClick={() => actions.navigate('tutor')}
-                  >
-                    <AcademyIcon kind="tutor" size="large" />
-                    <div>
-                      <h3>Tanya Mipi</h3>
-                      <p>Diskusikan soal atau unggah foto. Pahami langkahnya bersama Gemini.</p>
-                    </div>
-                    <ChevronRight size={20} />
-                  </button>
-                </section>
-              </div>
-              <section className="explore-section">
-                <div className="catalogue-heading">
-                  <h2>Materi Belajar {slide === 0 ? 'UTBK' : 'TKA SMA'}</h2>
-                  <div className="carousel-controls">
-                    <button
-                      aria-label="Banner sebelumnya"
-                      onClick={() => setSlide(slide === 0 ? 1 : 0)}
-                    >
-                      ‹
-                    </button>
-                    <button
-                      aria-label="Banner berikutnya"
-                      onClick={() => setSlide(slide === 0 ? 1 : 0)}
-                    >
-                      ›
-                    </button>
-                  </div>
-                </div>
-                <button
-                  className={`explore-banner slide-${slide}`}
-                  onClick={() => actions.navigate('materials')}
-                >
-                  <div>
-                    <small>LANGKAH KECIL, HASIL MAKSIMAL</small>
-                    <h3>
-                      {slide === 0 ? 'Siapkan UTBK dari sekarang!' : 'Makin siap menghadapi TKA.'}
-                    </h3>
-                    <p>Pelajari konsep, latih soal, dan pantau perkembanganmu.</p>
-                    <span>
-                      Mulai belajar <ArrowRight size={15} />
-                    </span>
-                  </div>
-                  <AcademyIcon kind={slide === 0 ? 'degree' : 'learning'} size="large" />
-                </button>
-              </section>
-              <section className="explore-section">
-                <h2>Explore Pahamin</h2>
-                <div className="explore-tiles">
-                  <button onClick={() => actions.navigate('pegasus')}>
-                    <AcademyIcon kind="pegasus" />
-                    <strong>Rencanakan targetmu</strong>
-                    <p>Pegasus bantu memilih fokus latihan.</p>
-                  </button>
-                  <button onClick={() => actions.navigate('ai')}>
-                    <AcademyIcon kind="ai" />
-                    <strong>File jadi materi belajar</strong>
-                    <p>Rangkuman dan kuis dari catatanmu.</p>
-                  </button>
-                  <button onClick={() => actions.navigate('live')}>
-                    <AcademyIcon kind="live" />
-                    <strong>Jadwal Live Class</strong>
-                    <p>Kelola sesi dan rekaman kelasmu.</p>
-                  </button>
-                </div>
-              </section>
-              <section className="explore-section">
-                <h2>Tips & Motivasi</h2>
-                <div className="study-tip">
-                  <span>💡</span>
-                  <div>
-                    <h3>Paham konsepnya, bukan cuma hafal jawabannya.</h3>
-                    <p>
-                      Coba jelaskan kembali materi dengan kata-katamu sendiri. Lalu kerjakan soal
-                      untuk menguji pemahaman.
-                    </p>
-                  </div>
-                  <button className="text-button" onClick={() => actions.navigate('quick')}>
-                    Sikat soal <ArrowRight size={15} />
-                  </button>
-                </div>
-              </section>
-            </>
+            <SuggestedMaterials state={state} actions={actions} curriculum={curriculum} />
           )}
         </div>
       </div>

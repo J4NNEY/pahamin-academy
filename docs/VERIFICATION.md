@@ -1,5 +1,59 @@
 # Verifikasi implementasi terbaru
 
+## Navbar atas dan penyederhanaan UI — 26 Oktober 2026
+
+- Menindaklanjuti koreksi pengguna: navbar dipindahkan dari sidebar ke atas, font Nunito
+  dan warna biru lembut dikembalikan, hero/dekorasi/statistik besar dihapus. Pengantar
+  promosi AI Studio dipangkas. Arahan yang berlaku ada di [DESIGN.md](DESIGN.md).
+- `npm run build` berhasil. Tidak menambah tes untuk perubahan presentasi yang reversibel;
+  suite backend 47 tes tidak dijalankan ulang pada iterasi UI ini. Tidak ada perubahan API,
+  skema database, role pengguna, atau panggilan Gemini nyata.
+- Chrome localhost dengan PGlite disposable: navbar desktop dan 320px diperiksa. Keenam
+  menu terlihat pada ponsel. Menu tambahan terbuka, Escape menutup dan mengembalikan fokus,
+  navigasi AI Studio bekerja. Login fixture admin dan akses Panel Admin melalui menu
+  tambahan berhasil. Override viewport dikembalikan ke ukuran normal.
+- Worker `9bf0d3bd-e006-4443-8a81-3d54fa7b7819` diterbitkan. Halaman publik dan API
+  `/api/state` HTTP 200; katalog 6 materi/16 soal. Bundle berisi navbar baru, tanpa sidebar
+  atau hero workspace sebelumnya. Tampilan navbar atas dikonfirmasi lewat browser publik.
+- Screenshot: `artifacts/top-navbar/live-desktop.png` dan
+  `artifacts/top-navbar/mobile-320.png`. Server preview lokal dihentikan setelah pengecekan.
+
+Tinjauan terbatas memakai better-layout dan better-ui:
+
+| Severity | Location | Before | After | Why |
+| --- | --- | --- | --- | --- |
+| MEDIUM, diperbaiki | src/Workspace.tsx:71 | Sidebar berbeda dari navigasi yang diminta pengguna | Navbar atas, menu tambahan, urutan DOM sesuai layout | Menjaga pola navigasi yang diminta dan urutan baca |
+| MEDIUM, diperbaiki | src/Dashboard.tsx:16 | Hero dan statistik mendominasi layar awal | Ringkasan singkat, katalog lebih cepat terlihat | Mendahulukan konten utama |
+
+Tidak ada actionable UI-polish findings tambahan pada kontrol baru yang diperiksa.
+Not verified: zoom browser aktual 200%, RTL, pseudo-localization, hover dengan pointer,
+forced-colors, dan seluruh state fitur di luar navbar/beranda/akses admin yang disebutkan.
+Approve untuk lingkup yang diperiksa; bukan persetujuan audit UI atau WCAG menyeluruh.
+
+## Identitas UI Pahamin — 26 Oktober 2026
+
+- Arahan terbaru pengguna: pertahankan biru, ganti layout dan komponen agar menjadi
+  identitas Pahamin sendiri. Implementasi memakai sidebar navy, workspace lebih lebar,
+  dashboard progres aktual, kartu pelajaran baru, monogram P, dan tipografi baru.
+  Panduan visual: [DESIGN.md](DESIGN.md).
+- `npm run build` berhasil; `npm test` 47 tes lulus. Tidak ada migrasi database pada
+  iterasi desain. Role admin dan data siswa tetap memakai skema sebelumnya.
+- Browser Chrome localhost dengan PGlite disposable: dashboard desktop dan viewport
+  ponsel 390×844 diperiksa; drawer ponsel bisa membuka halaman materi, pencarian
+  "fungsi" menampilkan materi yang sesuai, dan pembaca materi berhasil dibuka.
+  Login fixture admin serta navigasi sidebar ke panel admin berhasil. AI Studio
+  diperiksa pada keadaan belum dikonfigurasi; tidak ada file dikirim ke Gemini.
+  Override viewport browser dikembalikan ke ukuran normal.
+- Aset referensi dipindahkan ke `docs/reference-ui/`. Bundle JS publik tidak memuat
+  `/assets/reference-ui/`; font Nunito tidak lagi dipakai UI. Label pengguna menjadi
+  Rencana Belajar, Paham AI, dan Latihan Cepat. Route lama tetap berfungsi.
+- Worker `1baaeab6-2794-4f98-9c1e-71bae6d2bcfe` berhasil diterbitkan pada
+  `https://pahamin-academy.muhammadzanni28.workers.dev`. HTTP halaman dan `/api/state`
+  sama-sama 200, katalog 6 materi/16 soal. Dashboard baru terlihat pada browser publik.
+- Screenshot: `artifacts/redesign/live-desktop.png` (situs publik) dan
+  `artifacts/redesign/mobile.png` (preview lokal 390px). Server preview lokal dihentikan
+  setelah pemeriksaan. Perubahan belum di-commit/push.
+
 ## Panel admin — 26 Oktober 2026
 
 - Build TypeScript/Vite dan bundle Cloudflare berhasil. `npm test`: 47 tes lulus, termasuk

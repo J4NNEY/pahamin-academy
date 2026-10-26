@@ -1,29 +1,20 @@
 import { useState, useEffect, useCallback } from 'react';
 import {
-  ArrowLeft,
-  ArrowRight,
   ChevronRight,
   X,
   UserRound,
-  Settings,
   Bookmark,
   History,
   LogOut,
   Sparkles,
   LoaderCircle,
   BookOpen,
-  Video,
-  Rocket,
-  ClipboardList,
-  LibraryBig,
-  ShoppingBasket,
   ShieldCheck,
 } from 'lucide-react';
 import { api } from './api';
 import type { Page, State, Material, Session, Result, PracticeOptions, Actions } from './types';
 import { Modal, PageHero } from './ui';
 import { AuthDialog, SettingsPage } from './Account';
-import { AcademyIcon } from './AcademyArt';
 import { Learning, Collection, StudyHistory, MaterialReader } from './Learning';
 import { BankSoal, TryoutCenter, QuickPractice } from './TestCenter';
 import { Pegasus, Tutor, Purchase } from './Personal';
@@ -31,16 +22,8 @@ import { LiveClasses } from './Live';
 import { AIStudio, ImportDialog } from './Studio';
 import { QuizDialog, ResultDialog } from './Quiz';
 import { Admin } from './Admin';
+import { WorkspaceNavigation } from './Workspace';
 
-const navigation = [
-  { id: 'home', label: 'Belajar', icon: BookOpen, kind: 'learning' },
-  { id: 'live', label: 'Live', icon: Video, kind: 'live' },
-  { id: 'pegasus', label: 'Pegasus', icon: Rocket, kind: 'pegasus' },
-  { id: 'tryout', label: 'Tryout', icon: ClipboardList, kind: 'tryout' },
-  { id: 'questions', label: 'Bank Soal', icon: LibraryBig, kind: 'questions' },
-  { id: 'purchase', label: 'Pembelian', icon: ShoppingBasket, kind: 'purchase' },
-  { id: 'ai', label: 'AI Studio', icon: Sparkles, kind: 'ai' },
-] as const;
 const pages: Page[] = [
   'home',
   'materials',
@@ -220,13 +203,6 @@ export default function AcademyApp() {
     resume,
     busy,
   };
-  const currentNav = ['home', 'materials', 'collection', 'history'].includes(page)
-    ? 'home'
-    : page === 'tutor'
-      ? 'pegasus'
-      : page === 'quick'
-        ? 'questions'
-        : page;
   return (
     <div className="academy-app">
       <a
@@ -239,56 +215,12 @@ export default function AcademyApp() {
       >
         Lewati ke konten
       </a>
-      <header className="academy-header">
-        <nav className="academy-navbar academy-width" aria-label="Navigasi utama">
-          <a className="academy-brand" href="#/home" aria-label="Pahamin Academy, halaman belajar">
-            <svg viewBox="0 0 34 40" aria-hidden="true">
-              <path
-                d="M6 35V5q0-4 4-2L28 13q5 3 0 6L10 30"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M12 37V21l8-5"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-            </svg>
-            <span>
-              Pahamin<small>ACADEMY</small>
-            </span>
-          </a>
-          <div className="academy-navlinks">
-            {navigation.map((n) => (
-              <button
-                key={n.id}
-                className={currentNav === n.id ? 'active' : ''}
-                aria-current={currentNav === n.id ? 'page' : undefined}
-                onClick={() => navigate(n.id)}
-              >
-                <AcademyIcon kind={n.kind} size="small" />
-                <span>{n.label}</span>
-                {n.id === 'ai' && <i className="nav-new">AI</i>}
-              </button>
-            ))}
-          </div>
-          <button
-            className="academy-profile"
-            onClick={() => (state.user ? setProfile(true) : setAuth(true))}
-            aria-label={state.user ? 'Buka pengaturan akun' : 'Masuk atau daftar'}
-          >
-            <span className="profile-avatar">
-              <UserRound size={20} />
-            </span>
-            <small>{state.user?.name.split(' ')[0] || 'Masuk'}</small>
-          </button>
-        </nav>
-      </header>
+      <WorkspaceNavigation
+        state={state}
+        page={page}
+        navigate={navigate}
+        onAccount={() => (state.user ? setProfile(true) : setAuth(true))}
+      />
       <main id="main-content" tabIndex={-1}>
         {(page === 'home' || page === 'materials') && (
           <Learning

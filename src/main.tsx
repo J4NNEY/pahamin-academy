@@ -4,6 +4,7 @@ import App from './App';
 import ErrorBoundary from './ErrorBoundary';
 import './features.css';
 import './academy.css';
+import './pahamin.css';
 createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ErrorBoundary>

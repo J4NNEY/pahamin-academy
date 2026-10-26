@@ -460,8 +460,7 @@ export function AIStudio({
   return (
     <>
       <PageHeading
-        eyebrow="DARI FILE, JADI PAHAM"
-        title="Catatanmu punya potensi besar."
+        title="Materi dari file"
         description="Ubah file jadi materi terstruktur, rangkuman, dan latihan dengan Gemini."
         action={
           <span className={`ai-badge ${state.ai.configured ? 'connected' : ''}`}>
@@ -470,38 +469,6 @@ export function AIStudio({
           </span>
         }
       />
-      <div className="studio-intro">
-        <div className="studio-orbit">
-          <Sparkles size={34} />
-          <i />
-          <i />
-        </div>
-        <div>
-          <span className="eyebrow">KENALAN DENGAN TEMAN BELAJAR BARUMU</span>
-          <h2>
-            Kamu bawa bahannya.
-            <br />
-            AI bantu menyusunnya.
-          </h2>
-          <p>
-            Dari catatan kelas sampai modul panjang, ubah jadi langkah belajar yang lebih ringan.
-          </p>
-        </div>
-        <div className="studio-benefits">
-          <span>
-            <BookOpen size={17} />
-            Materi terstruktur
-          </span>
-          <span>
-            <Layers3 size={17} />
-            Poin-poin penting
-          </span>
-          <span>
-            <Check size={17} />
-            Kuis pemahaman
-          </span>
-        </div>
-      </div>
       {draft ? (
         <section className="panel draft-panel">
           <div className="section-heading">

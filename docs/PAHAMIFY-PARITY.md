@@ -1,5 +1,7 @@
 # Pemetaan Pahamify ke Pahamin Academy
 
+Catatan historis: sasaran kesamaan UI digantikan oleh desain Pahamin sendiri pada 26 Oktober 2026. Lihat [DESIGN.md](DESIGN.md). Aset referensi dipindah ke docs/reference-ui dan tidak digunakan runtime.
+
 Sumber: sesi Chrome yang telah login, 25 Oktober 2026. Observasi UI dipisahkan dari hasil MCP REA. Tidak ada pendaftaran tryout berbayar, pembelian, pengubahan profil, atau akses melewati batas akun yang dilakukan.
 
 ## Bukti yang digunakan

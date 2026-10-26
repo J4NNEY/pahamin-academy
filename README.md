@@ -1,6 +1,6 @@
 # Pahamin Academy
 
-Platform belajar lokal dengan UI biru/Nunito dan alur yang mengikuti referensi Pahamify: Learning, Live Class, Pegasus, Tryout, Bank Soal, Pembelian, AI Studio, dan Tanya Mipi.
+Platform belajar dengan identitas Pahamin: UI biru yang sederhana, navbar atas responsif, materi, latihan, tryout, kelas, Rencana Belajar, AI Studio, dan Paham AI. Panduan visual: [docs/DESIGN.md](docs/DESIGN.md).
 
 ## Menjalankan
 
@@ -52,8 +52,8 @@ Pilih **AI Studio**, unggah PDF/DOCX/TXT/MD/PNG/JPG, pilih pelajaran dan arahan 
 - **Learning:** pilih kurikulum, pelajaran, lalu materi. Bookmark dan tandai dipahami untuk menyimpan progres serta EXP aktual.
 - **Bank Soal:** pelajaran → topik → latihan. Riwayat dan bookmark soal tersedia. Leaderboard hanya menampilkan pengguna server lokal yang memilih ikut, berdasarkan hasil tujuh hari terakhir.
 - **Tryout:** pilih kategori, daftar gratis, lalu kerjakan subtes. `Tryout Saya` memuat paket terdaftar, sesi belum selesai, dan hasil. Timer mengikuti waktu server, termasuk setelah reload. Kode demo lokal: `PAHAMIN-UTBK`.
-- **Pegasus:** tentukan fokus dan target kampus/jurusan. Rekomendasi mengikuti akurasi aktual; latihan adaptif mendahulukan soal yang terakhir salah lalu soal yang belum pernah dikerjakan. Ini bukan prediksi skor UTBK atau peluang masuk jurusan.
-- **Tanya Mipi:** buka dari Learning/Pegasus untuk bertanya lewat teks atau melampirkan file/foto. Riwayat privat tersimpan per akun. Tidak ada respons AI tiruan pada aplikasi.
+- **Rencana Belajar:** tentukan fokus dan target kampus/jurusan. Rekomendasi mengikuti akurasi aktual; latihan adaptif mendahulukan soal yang terakhir salah lalu soal yang belum pernah dikerjakan. Ini bukan prediksi skor UTBK atau peluang masuk jurusan.
+- **Paham AI:** buka dari dashboard/Rencana Belajar untuk bertanya lewat teks atau melampirkan file/foto. Riwayat privat tersimpan per akun. Tidak ada respons AI tiruan pada aplikasi.
 - **Live Class:** tambah jadwal pribadi dalam WIB, pilih minggu/hari/kelas, lalu buka tautan meeting atau rekaman yang kamu tambahkan. Pengajar/streaming eksternal belum terintegrasi.
 - **Pembelian:** akses gratis lokal dan informasi konfigurasi Gemini. Gateway pembayaran serta produk berbayar belum aktif.
 
@@ -71,6 +71,6 @@ Setelah build, server Node menyajikan UI dan API di http://127.0.0.1:3001. Defau
 
 ## Referensi dan batas verifikasi
 
-Sesi Chrome yang sudah masuk digunakan untuk memeriksa UI referensi. MCP REA menangkap frontend publik dan menganalisis subset empat fungsi UI setelah analisis bundle utuh mencapai deadline. Hasil ini mengikuti tampilan serta alur yang teramati, tanpa klaim backend atau layanan berbayar identik. Materi dan soal contoh dibuat sendiri. Ikon publik referensi memiliki inventaris sumber di [SOURCES.json](public/assets/reference-ui/SOURCES.json). Detail pemetaan ada di [docs/PAHAMIFY-PARITY.md](docs/PAHAMIFY-PARITY.md) dan lingkup di [docs/SPEC.md](docs/SPEC.md).
+Sesi Chrome yang sudah masuk digunakan untuk memeriksa UI referensi. MCP REA menangkap frontend publik dan menganalisis subset empat fungsi UI setelah analisis bundle utuh mencapai deadline. Observasi ini menjadi catatan historis alur fitur awal; UI terbaru memakai desain Pahamin yang berbeda sesuai arahan pengguna, tanpa klaim backend atau layanan berbayar identik. Materi dan soal contoh dibuat sendiri. Ikon publik referensi tidak dipakai pada UI/deployment terbaru dan inventaris arsipnya ada di [SOURCES.json](docs/reference-ui/SOURCES.json). Detail pemetaan ada di [docs/PAHAMIFY-PARITY.md](docs/PAHAMIFY-PARITY.md) dan lingkup di [docs/SPEC.md](docs/SPEC.md).
 
 Tanpa API key, fitur AI menampilkan status belum terhubung. Pengujian otomatis integrasi Gemini memakai respons tiruan hanya di test, bukan fallback aplikasi. Status pengujian layanan nyata dan batas verifikasi terbaru dicatat di [docs/VERIFICATION.md](docs/VERIFICATION.md).

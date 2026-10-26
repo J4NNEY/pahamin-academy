@@ -44,7 +44,7 @@ export function Pegasus({ state, actions }: { state: State; actions: Actions }) 
   return (
     <>
       <PageHero
-        title="Pegasus"
+        title="Rencana Belajar"
         onBack={() => actions.navigate('home')}
         actions={
           state.preferences.onboarded ? (
@@ -58,18 +58,18 @@ export function Pegasus({ state, actions }: { state: State; actions: Actions }) 
       <div className="academy-width page-content">
         {!state.preferences.onboarded ? (
           <section className="pegasus-welcome white-panel">
-            <StudyBanner kind="pegasus" />
-            <h1>Melangkah Pasti Gapai Cita-Cita</h1>
+            <AcademyIcon kind="pegasus" size="large" />
+            <h1>Beri arah pada waktu belajarmu.</h1>
             <p>
-              Semua yang kamu butuhkan untuk belajar efektif dan mencapai targetmu ada di Pegasus.
+              Tentukan tujuan, pilih fokus, dan temukan latihan yang sesuai dengan perkembanganmu.
             </p>
-            <h3>Kelebihan Latihan Soal di Pegasus:</h3>
+            <h3>Rencana kecil untuk kemajuan yang terarah</h3>
             <div className="pegasus-benefits">
               {[
-                { icon: BookOpen, text: 'Materi lengkap, tidak lagi bingung belajar dari mana' },
+                { icon: BookOpen, text: 'Materi dan latihan dalam satu ruang belajar' },
                 { icon: Brain, text: 'Latihan yang memprioritaskan kebutuhan belajarmu' },
                 { icon: ChartNoAxesCombined, text: 'Pantau progres belajar dari hasil latihanmu' },
-                { icon: Sparkles, text: 'Mipi, teman diskusi belajarmu dengan Gemini' },
+                { icon: Sparkles, text: 'Paham AI, teman diskusi belajarmu dengan Gemini' },
               ].map((b) => (
                 <div key={b.text}>
                   <span>
@@ -178,12 +178,12 @@ export function Pegasus({ state, actions }: { state: State; actions: Actions }) 
                   </div>
                 ))}
             </section>
-            <button className="mipi-callout" onClick={() => actions.navigate('tutor')}>
-              <span className="mipi-avatar">
+            <button className="paham-ai-callout" onClick={() => actions.navigate('tutor')}>
+              <span className="paham-ai-avatar">
                 m<span>•</span>
               </span>
               <div>
-                <h3>Butuh bantuan Mipi?</h3>
+                <h3>Butuh bantuan Paham AI?</h3>
                 <p>Tanyakan konsep atau kirim foto soal yang bikin bingung.</p>
               </div>
               <ArrowRight size={21} />
@@ -339,7 +339,7 @@ export function Tutor({ state, actions }: { state: State; actions: Actions }) {
   return (
     <>
       <PageHero
-        title="Tanya Mipi"
+        title="Paham AI"
         onBack={() => actions.navigate('pegasus')}
         actions={
           <span className="hero-badge">
@@ -351,11 +351,11 @@ export function Tutor({ state, actions }: { state: State; actions: Actions }) {
       <div className="academy-width page-content tutor-page">
         <section className="white-panel tutor-panel">
           <header>
-            <span className="mipi-avatar">
+            <span className="paham-ai-avatar">
               m<span>•</span>
             </span>
             <div>
-              <h2>Mipi, teman belajarmu</h2>
+              <h2>Paham AI, teman belajarmu</h2>
               <p>Teks atau foto soal, kita bahas bareng.</p>
             </div>
             <span className={`connection-label ${state.ai.configured ? 'connected' : ''}`}>
@@ -368,7 +368,8 @@ export function Tutor({ state, actions }: { state: State; actions: Actions }) {
                 <Sparkles size={36} />
                 <h2>Halo! Mau pahami apa hari ini?</h2>
                 <p>
-                  Tanyakan materi atau lampirkan foto soal. Mipi membantu menjelaskan langkahnya.
+                  Tanyakan materi atau lampirkan foto soal. Paham AI membantu menjelaskan
+                  langkahnya.
                 </p>
                 <div>
                   {[
@@ -386,7 +387,7 @@ export function Tutor({ state, actions }: { state: State; actions: Actions }) {
             )}
             {state.tutorMessages.map((m) => (
               <article className={`chat-message ${m.role}`} key={m.id}>
-                <span>{m.role === 'assistant' ? 'Mipi' : 'Kamu'}</span>
+                <span>{m.role === 'assistant' ? 'Paham AI' : 'Kamu'}</span>
                 <div>
                   <ReactMarkdown>{m.content}</ReactMarkdown>
                 </div>
@@ -410,7 +411,7 @@ export function Tutor({ state, actions }: { state: State; actions: Actions }) {
             {busy && (
               <div className="chat-thinking">
                 <LoaderCircle className="spin" size={17} />
-                Mipi sedang menyusun penjelasan…
+                Paham AI sedang menyusun penjelasan…
               </div>
             )}
             <div ref={bottom} />
@@ -455,7 +456,7 @@ export function Tutor({ state, actions }: { state: State; actions: Actions }) {
               </div>
             )}
             <textarea
-              aria-label="Pertanyaan untuk Mipi"
+              aria-label="Pertanyaan untuk Paham AI"
               placeholder="Tulis pertanyaanmu di sini…"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
@@ -544,7 +545,7 @@ export function Purchase({ actions }: { actions: Actions }) {
                     'Materi contoh & koleksi personal',
                     'Bank soal dan impor CSV/JSON',
                     'Tryout, pembahasan & progres',
-                    'Pegasus dan jadwal kelas pribadi',
+                    'Rencana Belajar dan jadwal kelas pribadi',
                   ].map((t) => (
                     <li key={t}>
                       <CheckCircle2 size={16} />
@@ -583,8 +584,8 @@ export function Purchase({ actions }: { actions: Actions }) {
               <div>
                 <h3>Pembayaran belum dikonfigurasi</h3>
                 <p>
-                  Belum ada produk berbayar atau transaksi uang pada aplikasi ini. Paket Pahamify
-                  tidak dijual oleh Pahamin Academy.
+                  Belum ada produk berbayar atau transaksi uang pada aplikasi ini. Materi dan
+                  latihan yang tersedia dapat kamu akses gratis.
                 </p>
               </div>
             </div>

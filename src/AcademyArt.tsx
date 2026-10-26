@@ -1,25 +1,9 @@
-import {
-  BookOpen,
-  Video,
-  Rocket,
-  LibraryBig,
-  ClipboardCheck,
-  Gamepad2,
-  Sparkles,
-  Crown,
-  Atom,
-  FlaskConical,
-  Leaf,
-  Languages,
-  Brain,
-  Calculator,
-  GraduationCap,
-  CalendarDays,
-} from 'lucide-react';
+import { BookOpen, Video, LibraryBig, ClipboardCheck, Gamepad2, Sparkles, Crown, Atom, FlaskConical, Leaf, Languages, Brain, Calculator, GraduationCap, CalendarDays, Compass, MessageCircle, Landmark, Globe2, Map, TrendingUp } from 'lucide-react';
 const icons = {
   learning: BookOpen,
   live: Video,
-  pegasus: Rocket,
+  pegasus: Compass,
+  tutor: MessageCircle,
   questions: LibraryBig,
   tryout: ClipboardCheck,
   quick: Gamepad2,
@@ -34,6 +18,11 @@ const icons = {
   'Penalaran Umum': Brain,
   degree: GraduationCap,
   calendar: CalendarDays,
+  Geografi: Globe2,
+  Sejarah: Landmark,
+  'Sejarah Wajib': Landmark,
+  Ekonomi: TrendingUp,
+  Sosiologi: Map,
 };
 export function AcademyIcon({
   kind,
@@ -43,39 +32,6 @@ export function AcademyIcon({
   size?: 'small' | 'normal' | 'large';
 }) {
   const Icon = icons[kind as keyof typeof icons] || BookOpen;
-  const assets: Record<string, string> = {
-    pegasus: 'pegasus.svg',
-    questions: 'bank-soal.svg',
-    tryout: 'tryout.svg',
-    quick: 'sikat-soal.svg',
-    tutor: 'mipi.svg',
-    'Penalaran Umum': 'icon_pu_utbk.png',
-    'Pengetahuan & Pemahaman Umum': 'icon_ppu_utbk.png',
-    'Kemampuan Memahami Bacaan dan Menulis': 'icon_pbm_utbk.png',
-    'Pengetahuan Kuantitatif': 'icon_pk_utbk.png',
-    'Literasi Bahasa Indonesia': 'icon_ppu_utbk.png',
-    'Bahasa Indonesia': 'icon_ppu_utbk.png',
-    'Literasi Bahasa Inggris': 'icon_bing_universal.png',
-    'Bahasa Inggris': 'icon_bing_universal.png',
-    'Penalaran Matematika': 'icon_pk_utbk.png',
-    Matematika: 'icon_matematika_utbk.png',
-    'Matematika saintek': 'icon_matematika_utbk.png',
-    'Matematika IPA': 'icon_matematika_utbk.png',
-    Fisika: 'icon_fisika_utbk.png',
-    Kimia: 'icon_kimia_xi-ipa.png',
-    Biologi: 'icon_biologi_utbk.png',
-    Geografi: 'icon_geografi_xi-ips.png',
-    Sejarah: 'icon_sejarah_utbk.png',
-    'Sejarah Wajib': 'icon_sejarah_utbk.png',
-    Ekonomi: 'icon_ekonomi_xi-ips.png',
-    Sosiologi: 'icon_sosiologi_utbk.png',
-  };
-  if (assets[kind])
-    return (
-      <span className={`academy-icon reference-icon ${size}`} aria-hidden="true">
-        <img src={'/assets/reference-ui/' + assets[kind]} alt="" loading="lazy" />
-      </span>
-    );
   return (
     <span className={`academy-icon icon-${kind.replaceAll(' ', '-')} ${size}`} aria-hidden="true">
       <span />

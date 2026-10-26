@@ -1,6 +1,6 @@
 # Pahamin Academy
 
-Implementasi lokal platform belajar berbahasa Indonesia yang mengikuti UI dan alur Pahamify yang dapat diamati. Identitas produk, akun, materi, soal dan backend tetap Pahamin Academy. Ikon UI publik yang teramati disimpan lokal dengan sumber di `public/assets/reference-ui/SOURCES.json`.
+Platform belajar berbahasa Indonesia dengan identitas visual Pahamin sendiri. Sesuai arahan terbaru pengguna, UI kembali sederhana dengan navbar horizontal di atas, warna biru lembut, font Nunito, dan halaman yang mengutamakan materi. Panduan visual ada di [DESIGN.md](DESIGN.md). Pahamify hanya menjadi referensi historis untuk alur fitur awal.
 
 ## Bukti referensi
 
@@ -18,14 +18,14 @@ REA pada bundle publik utuh mencapai deadline; analisis subset empat fungsi UI y
 - Impor CSV/JSON tanpa AI; PDF/DOCX/TXT/MD dengan ekstraksi Gemini. Semua hasil masuk pratinjau sebelum disimpan.
 - AI Studio menerima PDF, DOCX, TXT, MD, PNG, JPEG; menghasilkan ringkasan, bagian materi, poin penting, dan kuis. Hasil draf ditinjau sebelum disimpan.
 - API key Gemini hanya dibaca server dari .env; status konfigurasi terlihat di UI.
-- Navbar dan Learning mengikuti referensi, termasuk level/EXP dari progres aktual, pintasan, kurikulum UTBK/UM/SMA/SMP, katalog pelajaran, dan bookmark.
+- Navbar atas responsif, target harian yang ringkas, pintasan, kurikulum UTBK/UM/SMA/SMP, katalog pelajaran, dan bookmark.
 - Bank Soal pelajaran → topik → soal, filter kurikulum/kesulitan, bookmark soal dan leaderboard lokal opt-in.
 - Tryout per kategori dengan pendaftaran gratis lokal, kode demo, subtes, Tryout Saya, dan pemulihan sesi dari server.
-- Pegasus menyimpan fokus, kampus/jurusan, dan waktu belajar. Latihan adaptif memprioritaskan soal yang terakhir salah lalu soal yang belum pernah dikerjakan.
-- Tutor Tanya Mipi menerima teks atau file/foto, menggunakan Gemini dan menyimpan riwayat percakapan privat.
+- Rencana belajar menyimpan fokus, kampus/jurusan, dan waktu belajar. Latihan adaptif memprioritaskan soal yang terakhir salah lalu soal yang belum pernah dikerjakan.
+- Tutor Paham AI menerima teks atau file/foto, menggunakan Gemini dan menyimpan riwayat percakapan privat.
 - Live Class mempunyai kalender minggu/hari, jadwal pribadi, tautan meeting, dan rekaman yang dapat ditambahkan pengguna.
 - Materi mempunyai tab Video/Rangkuman/Kuis. Video HTTPS atau YouTube milik pengguna dapat ditambahkan pada draf materi AI.
 
 ## Batas
 
-Aplikasi mempunyai backend nyata, mendukung server Node lokal dan deployment Cloudflare Workers. Panduan deployment ada di [CLOUDFLARE.md](CLOUDFLARE.md). Tidak menyertakan perpustakaan video/soal premium Pahamify, layanan pengajar/streaming, gateway pembayaran, ranking nasional, IRT, prediksi kelulusan jurusan, OAuth, verifikasi email atau reset password email. Halaman Pembelian menampilkan akses gratis dan konfigurasi Gemini tanpa memalsukan transaksi berhasil. Soal dan materi bawaan ditandai contoh. Panggilan Gemini nyata memerlukan key dan jaringan; kegagalan tidak diganti hasil palsu. File diolah dalam memori, maksimal 10 MB, tanpa penyimpanan file mentah. Teks maksimal 150.000 karakter; impor maksimal 200 soal per batch. Ikon publik referensi disajikan sebagai gambar, bukan bundle JavaScript Pahamify.
+Aplikasi mempunyai backend nyata, mendukung server Node lokal dan deployment Cloudflare Workers. Panduan deployment ada di [CLOUDFLARE.md](CLOUDFLARE.md). Tidak menyertakan perpustakaan video/soal premium Pahamify, layanan pengajar/streaming, gateway pembayaran, ranking nasional, IRT, prediksi kelulusan jurusan, OAuth, verifikasi email atau reset password email. Halaman Pembelian menampilkan akses gratis dan konfigurasi Gemini tanpa memalsukan transaksi berhasil. Soal dan materi bawaan ditandai contoh. Panggilan Gemini nyata memerlukan key dan jaringan; kegagalan tidak diganti hasil palsu. File diolah dalam memori, maksimal 10 MB, tanpa penyimpanan file mentah. Teks maksimal 150.000 karakter; impor maksimal 200 soal per batch. Ikon publik referensi disimpan sebagai arsip dokumentasi di docs/reference-ui dan tidak disajikan pada UI terbaru.
